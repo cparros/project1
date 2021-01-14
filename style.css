@@ -1,0 +1,11 @@
+.playArea {
+  background-color: green;
+  border-color: brown ;
+  border-style: solid;
+  border-width: 10px;
+  border-radius: 600px;
+  height: 300px;
+  width: 300px;
+  text-align: center;
+  color: wheat;
+}
