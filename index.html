@@ -18,6 +18,30 @@
 <header>
   <h1>Team 6 BlackJack</h1>
 
+  <!--Modal Content-->
+  <div id="ex1" class="modal">
+    <ol> THE RULES OF BLACKJACK
+      <li>The goal for blackjack is beating the sum of the dealer’s hand without going over a total of 21.</li>
+      <li>All numbered cards are worth their number</li> 
+      <li>All Face Cards (Jack, Queen, King) are worth 10.</li> 
+      <li>Aces are worth 1 or 11. Whichever will make a better hand.</li>
+      <li>Each player starts with two cards</li>
+      <li>The dealer also begins with two cards however one of the dealer’s cards is hidden until the end of the game.</li>
+      <li>To “hit” is to ask for another card. To “stand” is to hold on to your total and end your turn.</li>
+      <li>If the sum of the players cards is over 21 means that you bust, and the dealer wins.</li>
+      <li>If you tie with the dealer, it is counted as a push and you both get your money back.</li>
+      <li>If you are dealt 21 at the start (Ace & 10), you have a Blackjack.</li>
+      <li>The dealer will hit until their cards total 17 or higher.</li>
+      <li>Doubling is like a hit, only the bet is doubled and you only get one more card (You cannot hit again after doubling and cannot double on the second turn.).</li>
+    </ol>
+    
+    <a href="#" rel="modal:close">Close</a>
+  </div>
+  
+  <!-- Link to open the modal -->
+  <button><a href="#ex1" rel="modal:open">Rules</a></button>
+  
+
 </header>
 <body>
   <aside>
@@ -47,6 +71,8 @@
   </aside>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
     <script src="script.js"></script>
 </body>
 
