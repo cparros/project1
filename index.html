@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
-
-</html>
-
+​
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,8 +10,9 @@
     integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
   <link rel="preconnect" href="https://fonts.gstatic.com" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css"/>
 </head>
+
 <header>
   <h1>Team 6 BlackJack</h1>
 
@@ -32,8 +30,7 @@
       <li>If you tie with the dealer, it is counted as a push and you both get your money back.</li>
       <li>If you are dealt 21 at the start (Ace & 10), you have a Blackjack.</li>
       <li>The dealer will hit until their cards total 17 or higher.</li>
-      <li>Doubling is like a hit, only the bet is doubled and you only get one more card (You cannot hit again after doubling and cannot double on the second turn.).</li>
-      <li>HAVE FUN!</li>
+      <li>Doubling is like a hit, only the bet is doubled and you only get one more card(can’t hit again after doubling and can’t double on the second turn.).</li>
     </ol>
     
     <a href="#" rel="modal:close">Close</a>
@@ -41,40 +38,71 @@
   
   <!-- Link to open the modal -->
   <button><a href="#ex1" rel="modal:open">Rules</a></button>
-  
-
 </header>
+​
 <body>
-  <aside>
-    <div class="dealer-div">
-      <h3>Random Name</h3>
-      <p>Dealer</p>
-    </div>
-  </aside>
-  <br>
-  <div class="dialogue">
-    <h3>Dialogue</h3>
-    <p>Dealer</p>
-  </div>
-
-  <div id="gambleButtons">
-    <button type="button" id="hitButton" class="gamble">Hit</button>
-    <button type="button" id="stayButton" class="gamble">Stay</button>
-    <button type="button" id="doubleButton" class="gamble double">Double</button>
-
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12 playArea">
-          Play Area
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-2">
+        <div class="dealer-div">
+          <h3>Random Name</h3>
+          <p>Dealer</p>
         </div>
       </div>
-    </div>
+      <div class="col-md-8">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12 playArea">
+              Play Area
+            </div>
+          </div>
+        </div>
+      
+        <br>
+      
+        <div class="btn-container">
+          <div class="row">
+            <div id="gambleButtons">
+              <button type="button" id="New Game" class="start-game">New Game</button>
+              <button type="button" id="hitButton" class="gamble">Hit</button>
+              <button type="button" id="stayButton" class="gamble">Stay</button>
+              <button type="button" id="doubleButton" class="gamble double">Double</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-2">
+        <aside>
+          <div class="dealer-div">
+            <h3>Random Name</h3>
+            <p>Dealer</p>
+          </div>
+      
+        <br>
+      
+        <div class="dialogue">
+          <h3>Dialogue</h3>
+          <p>Dealer</p>
+        </div>
+      ​</aside>
+      </div>
+
+​
+  
+
+
+
+</div>
+</div>
+
+
   </aside>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
-    <script src="script.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+  <script src="script.js"></script>
+​
 </body>
-
+​
 </html>
