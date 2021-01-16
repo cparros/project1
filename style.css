@@ -1,6 +1,15 @@
 body {
   background-color: rgb(210, 228, 233);
 }
+
+header {
+  border-bottom: black solid;
+}
+
+content {
+  padding-top: 50px;
+}
+
 .playArea {
   background-color: green;
   border-color: brown ;
@@ -21,7 +30,6 @@ body {
 }
 
 .score-div {
-  
   border: solid; 
 }
 
