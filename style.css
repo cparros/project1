@@ -19,6 +19,12 @@ body {
 .btn-container {
   margin-left: 38%;
 }
+
+.score-div {
+  
+  border: solid; 
+}
+
   .dealer-div {
   /* margin-right: 20px;
   padding: 20px;
@@ -28,6 +34,12 @@ body {
   height: 100%; */
   border: solid;
 }
+
+.player-div {
+  border: solid;
+  height: 200px;
+}
+
 .dialogue {
   /* /* margin-top: 20px;
   margin-right: 20px;
