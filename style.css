@@ -1,6 +1,9 @@
+
 body {
   background-color: rgb(210, 228, 233);
 }
+
+ 
 
 .playArea {
   background-color: green;
@@ -18,11 +21,13 @@ body {
 .container {
   /* margin: auto; */
   margin-left: 280px;
+
 }
 
 .container1 {
 
   margin-left: 38%;
+
 }
 
   .dealer-div {
