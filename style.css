@@ -1,13 +1,33 @@
+
+body {
+  background-color: rgb(210, 228, 233);
+}
+
+ 
+
 .playArea {
   background-color: green;
   border-color: brown ;
   border-style: solid;
   border-width: 10px;
   border-radius: 600px;
-  height: 400px;
-  width: 200px;
+  height: 450px;
+  width: 50%;
   text-align: center;
-  color: wheat;
+  color: wheat;  
+}
+
+
+.container {
+  /* margin: auto; */
+  margin-left: 280px;
+
+}
+
+.container1 {
+
+  margin-left: 38%;
+
 }
 
   .dealer-div {
@@ -17,7 +37,7 @@
   float: right;
   width: 20%;
   height: 100%;
-  border: dotted;
+  border: solid;
 
 }
 
