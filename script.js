@@ -103,6 +103,12 @@ $(document).ready(function() {
         }
     }
 
+    $('#hitButton').click(function(e){
+        e.preventDefault();
+        console.log('clicked')
+    })
+
+
     
 
     //testing
