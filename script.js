@@ -1,6 +1,7 @@
-var playerHand = [];
+var userHand = [];
 var dealerHand = [];
 
+var backOfCard = "assets/Images/back-of-card.jpg";
 var deckID;
 
 // Set variables for card values 
@@ -15,9 +16,29 @@ var userBetTotal;
 
 $(document).ready(function() {
 
+    // when new game button is clicked
+    $("#newGameButton").on("click", function(event) {
+        event.preventDefault();
+        $(".dealerHand").empty();
+        userHand = [];
 
-    //shuffles cards throught the api and gets deck id
+        //displaying back of cards for dealers hand
+        var li = $("<li>");
+        var li2 = $("<li>");
+        var img = $("<img>").addClass("list-group-item cardImg");
+        var img2 = $("<img>").addClass("list-group-item cardImg");
+        $(img).attr("src", backOfCard);
+        $(img2).attr("src", backOfCard);
+        $(li).append(img);
+        $(li2).append(img2);
+        $(".dealerHand").append(li);
+        $(".dealerHand").append(li2);
 
+        shuffleCards();
+
+    });
+
+     //shuffles cards throughout the api and gets deck id
     function shuffleCards() {
         var shuffle = "https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6";
 
@@ -26,7 +47,6 @@ $(document).ready(function() {
             method: "GET"
         }).then(function(deck) {
             deckID = deck.deck_id;
-            console.log(deckID);
             drawCards(deckID);
         });
 
@@ -35,27 +55,36 @@ $(document).ready(function() {
 
     function drawCards(text) {
         //set currentHand div to empty for both players
-        $("#dealerHand").empty();
-        $("#userHand").empty();
+        $(".userHand").empty();
         userScore = 0;
         dealerScore = 0;
-        console.log(text);
+        // console.log(text);
 
         var userDraw = "https://deckofcardsapi.com/api/deck/" + text + "/draw/?count=2";
         $.ajax({
             url: userDraw,
             method: "GET"
         }).then(function(cards) {
+            console.log(cards);
+
+
+            for (var i = 0; i < cards.cards.length; i++) {
+                userHand.push(cards.cards[i].code);
+            }  
+            console.log(userHand);
+            var userUL = $(".userHand");
+            displayCards(userHand, userUL);
             //append an image tag to divs set in html(ask others about possibly adding two div tags for the users 2 cards. Can be the back of a playing card as example)
 
             //we need to add the value of the card into the array for playerHand
-            console.log(cards);
         });
         var dealerDraw = "https://deckofcardsapi.com/api/deck/" + text + "/draw/?count=2";
         $.ajax({
             url: dealerDraw,
             method: "GET"
         }).then(function(cards) {
+            // var dealerUL = $(".dealerHand");
+            // dealCards(dealerHand, dealerUL);
             //append an image tag to divs set in html(ask others about possibly adding two div tags for the users 2 cards. Can be the back of a playing card as example)
 
             //we need to add the value of the card into the array for dealerHand
@@ -63,13 +92,23 @@ $(document).ready(function() {
         });
     }
 
+    //handArr param = dealer or user array & dealerOrUser = dealer or user <ul>
+    function displayCards(handArr, dealerOrUser) {
+        for (var i = 0; i < handArr.length; i++) {
+            var li = $("<li>");
+            var img = $("<img>").attr("class", "list-group-item cardImg", "src", "https://deckofcardsapi.com/static/img/" + handArr[i] + ".png");
+            $(img).attr("src", "https://deckofcardsapi.com/static/img/" + handArr[i] + ".png")
+            $(li).append(img);
+            $(dealerOrUser).append(li)
+        }
+    }
+
     
 
     //testing
-    shuffleCards();
     //console.log(deckID);
     //drawCards();
-    diceBear();
+    // diceBear();
 
 
 
@@ -92,13 +131,13 @@ $(document).ready(function() {
 
 //dicebear info
 
-function diceBear () {
-    var faceId = Math.floor(Math.random() * 10000);
-    console.log(faceId);
+// function diceBear () {
+//     var faceId = Math.floor(Math.random() * 10000);
+//     // console.log(faceId);
 
-    var faceMaker = "https://avatars.dicebear.com/4.5/api/human/" + faceId + ".svg?background=%230000ff";
-    console.log(faceMaker);
-}
+//     // var faceMaker = "https://avatars.dicebear.com/4.5/api/human/" + faceId + ".svg?background=%230000ff";
+//     // console.log(faceMaker);
+// }
 
 //We could use dicebear to have the user give us a dealer name and user name which will give them randomly generated avatars
 //Different for male and female so they would have to give use gender as well as name
