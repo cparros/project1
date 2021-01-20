@@ -98,6 +98,7 @@ function diceBear () {
 
     var faceMaker = "https://avatars.dicebear.com/4.5/api/human/" + faceId + ".svg?background=%230000ff";
     console.log(faceMaker);
+    $(".img-of-dealer").attr("src", faceMaker);
 }
 
 //We could use dicebear to have the user give us a dealer name and user name which will give them randomly generated avatars
