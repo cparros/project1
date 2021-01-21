@@ -20,20 +20,22 @@ var userBetTotal;
 $(document).ready(function() {
 
     function sumOfHand() {
-        var value = 0
+        var value = 0;
 
         userHand.forEach(function(index){
-            var cardVal = index[0]
+            var cardVal = index[0];
         
 
-            if(cardVal === "J" || "K" || "Q" || "0"){
-                cardVal = 10
-                console.log("one: " + cardVal)
+            if(cardVal === "J" || cardVal === "K" || cardVal === "Q" || cardVal === "0"){
+                cardVal = 10;
+                console.log("one: " + cardVal);
 
-            } else if(cardVal === "2" || "3" || "4" || "5" || "6" || "7" || "8"  || "9")  {
-               
-                console.log("Two: " + cardVal)
+            } else if(cardVal === "2" || cardVal === "3" || cardVal === "4" || cardVal === "5" || cardVal === "6" || cardVal === "7" || cardVal === "8"  || cardVal === "9")  {
+                cardVal = 1;
+                console.log("Two: " + parseInt(cardVal));
                 
+            } else if(cardVal === "A" && totalValue > 10)  {
+                cardVal = 1;
             }
             
           
@@ -68,7 +70,6 @@ $(document).ready(function() {
     });
 
     $("#stayButton").on("click", function(event) {
-        //needs for loop
         //needs
         console.log(deckID);
         while(dealerScore <= 17) {
