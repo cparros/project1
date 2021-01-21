@@ -37,17 +37,9 @@ $(document).ready(function() {
                 console.log("Two: " + cardVal)
                 console.log(parseInt(cardVal))
                
-                totalValues.push(cardVal)
-            }
-
-            console.log(totalValues)
-            
-          
-           
-            
-
-            
-            
+                totalValues.push(parseInt(cardVal))
+            } 
+            console.log(totalValues.reduce((a, b) => a + b, 0))
         })
     }
 
