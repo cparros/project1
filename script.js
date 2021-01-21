@@ -51,7 +51,10 @@ $(document).ready(function() {
         }).then(function(deck) {
             deckID = deck.deck_id;
             drawCards(deckID);
+
+            hitMe(deckID)
         });
+
 
     }
 
@@ -106,13 +109,35 @@ $(document).ready(function() {
         }
     }
 
-    //CP Ht
+    //CP Hit BTN
+function hitMe (deckID) {
 
     $('#hitButton').click(function(e){
         e.preventDefault();
+        $(".userHand").empty()
         console.log('clicked')
+        var userDraw = "https://deckofcardsapi.com/api/deck/" + deckID + "/draw/?count=1";
+        console.log(userDraw)
+        $.ajax({
+            url: userDraw,
+            method: "GET"
+        }).then(function(cards) {
+            console.log(cards);
+
+
+            for (var i = 0; i < 1; i++) {
+                userHand.push(cards.cards[i].code);
+            }  
+            console.log(userHand);
+            var userUL = $(".userHand");
+            displayCards(userHand, userUL);
+            //append an image tag to divs set in html(ask others about possibly adding two div tags for the users 2 cards. Can be the back of a playing card as example)
+
+            //we need to add the value of the card into the array for playerHand
+        });
 
     })
+}
 
 
     
