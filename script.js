@@ -19,6 +19,8 @@ var userBetTotal;
 
 $(document).ready(function() {
 
+    diceBear();
+
     function sumOfHand() {
         totalValues = []
         var value = 0
@@ -71,6 +73,30 @@ $(document).ready(function() {
 
         shuffleCards();
         
+    });
+
+    $("#stayButton").on("click", function(event) {
+        //needs
+        console.log(deckID);
+        //change to while after working
+        if (dealerScore <= 17) {
+            
+            var dealerDraw = "https://deckofcardsapi.com/api/deck/" + deckID + "/draw/?count=1";
+
+            $.ajax({
+                url: dealerDraw,
+                method: "GET"
+            }).then(function(deck) {
+                var li = $("<li>");
+                var img = $("<img>").attr("class", "list-group-item cardImg");
+                $(img).attr("src", "https://deckofcardsapi.com/static/img/" + deck.cards[0].code + ".png")
+                $(li).append(img);
+                var dealerUL = $(".dealerHand");
+                $(dealerUL).append(li)
+            });
+
+            
+        }
     });
 
      //shuffles cards throughout the api and gets deck id
@@ -135,7 +161,7 @@ $(document).ready(function() {
     function displayCards(handArr, dealerOrUser) {
         for (var i = 0; i < handArr.length; i++) {
             var li = $("<li>");
-            var img = $("<img>").attr("class", "list-group-item cardImg", "src", "https://deckofcardsapi.com/static/img/" + handArr[i] + ".png");
+            var img = $("<img>").attr("class", "list-group-item cardImg");
             $(img).attr("src", "https://deckofcardsapi.com/static/img/" + handArr[i] + ".png")
             $(li).append(img);
             $(dealerOrUser).append(li)
@@ -203,16 +229,16 @@ $(document).ready(function() {
 
 //dicebear info
 
-// function diceBear () {
-//     var faceId = Math.floor(Math.random() * 10000);
-//     // console.log(faceId);
+function diceBear () {
+     var faceId = Math.floor(Math.random() * 10000);
+     console.log(faceId);
 
-//     // var faceMaker = "https://avatars.dicebear.com/4.5/api/human/" + faceId + ".svg?background=%230000ff";
-//     // console.log(faceMaker);
-// }
+     var faceMaker = "https://avatars.dicebear.com/4.5/api/human/" + faceId + ".svg?background=%230000ff";
+     console.log(faceMaker);
+     $(".img-of-dealer").attr("src", faceMaker);
+ }
 
 //We could use dicebear to have the user give us a dealer name and user name which will give them randomly generated avatars
 //Different for male and female so they would have to give use gender as well as name
 
 });
-
