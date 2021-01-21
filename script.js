@@ -6,8 +6,11 @@ var deckID;
 
 // Set variables for card values 
 
+var userWins // (total user wins)
+var userLosses // (tottal user losses)
 var userScore; // (total value in hand)
 var dealerScore; // (total value in hand)
+
 
 var userBetTotal;
 // Add bet totals to local storage?
@@ -103,9 +106,12 @@ $(document).ready(function() {
         }
     }
 
+    //CP Ht
+
     $('#hitButton').click(function(e){
         e.preventDefault();
         console.log('clicked')
+
     })
 
 
