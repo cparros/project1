@@ -6,8 +6,8 @@ var deckID;
 
 // Set variables for card values 
 
-var userWins // (total user wins)
-var userLosses // (tottal user losses)
+var userWins = 0 // (total user wins)
+var userLosses = 0 // (tottal user losses)
 var userScore; // (total value in hand)
 var dealerScore; // (total value in hand)
 var totalScore = []
@@ -67,10 +67,21 @@ $(document).ready(function() {
 
     newGameBtn.on("click", function(event) {
         event.preventDefault();
-        $(".dealerHand").empty();
+        $('.dealerHand').empty();
         userHand = [];
 
+
+        if($('#winner') || $('#loser') === true){
+        $('#winner').hide()
+        $('#loser').hide()
+        } else {
+        }
+
         //displaying back of cards for dealers hand
+        var wins = $('.winsScore')
+        var losses = $('.lossesScore')
+        wins.text("Wins: " + userWins)
+        losses.text("Losses: " + userLosses)
         var li = $("<li>");
         var li2 = $("<li>");
         var img = $("<img>").addClass("list-group-item cardImg");
