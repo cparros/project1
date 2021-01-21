@@ -51,6 +51,7 @@ $(document).ready(function() {
                 var winnerDiv = $('<div id="winner">')
                 winnerDiv.text("You WIN")
                 winnerLoser.append(winnerDiv)
+                userWins++
 
             } else if(totalHandVal > 21 ) {
                 var winnerLoser= $('.winnerLoser')
@@ -59,6 +60,7 @@ $(document).ready(function() {
                 var loserDiv = $('<div id="loser">')
                 loserDiv.text("You LOSE")
                 winnerLoser.append(loserDiv)
+                userLosses++
             }
         })
     }
