@@ -38,6 +38,30 @@ $(document).ready(function() {
 
     });
 
+    $("#stayButton").on("click", function(event) {
+        //needs for loop
+        //needs
+        console.log(deckID);
+        while(dealerScore <= 17) {
+            
+            var dealerDraw = "https://deckofcardsapi.com/api/deck/" + deckID + "/draw/?count=1";
+
+            $.ajax({
+                url: dealerDraw,
+                method: "GET"
+            }).then(function(deck) {
+                var li = $("<li>");
+                var img = $("<img>").attr("class", "list-group-item cardImg");
+                $(img).attr("src", "https://deckofcardsapi.com/static/img/" + deck.cards[0].code + ".png")
+                $(li).append(img);
+                var dealerUL = $(".dealerHand");
+                $(dealerUL).append(li)
+            });
+
+            
+        }
+    });
+
      //shuffles cards throughout the api and gets deck id
     function shuffleCards() {
         var shuffle = "https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6";
@@ -96,7 +120,7 @@ $(document).ready(function() {
     function displayCards(handArr, dealerOrUser) {
         for (var i = 0; i < handArr.length; i++) {
             var li = $("<li>");
-            var img = $("<img>").attr("class", "list-group-item cardImg", "src", "https://deckofcardsapi.com/static/img/" + handArr[i] + ".png");
+            var img = $("<img>").attr("class", "list-group-item cardImg");
             $(img).attr("src", "https://deckofcardsapi.com/static/img/" + handArr[i] + ".png")
             $(li).append(img);
             $(dealerOrUser).append(li)
