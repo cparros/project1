@@ -11,7 +11,7 @@ var userLosses // (tottal user losses)
 var userScore; // (total value in hand)
 var dealerScore; // (total value in hand)
 var totalScore = []
-
+var totalValues = []
 var userBetTotal;
 // Add bet totals to local storage?
 
@@ -20,21 +20,27 @@ var userBetTotal;
 $(document).ready(function() {
 
     function sumOfHand() {
+        totalValues = []
         var value = 0
-
         userHand.forEach(function(index){
             var cardVal = index[0]
-        
+            var total = 0
 
-            if(cardVal === "J" || "K" || "Q" || "0"){
+            if(cardVal === "J" || cardVal ==="K" || cardVal ==="Q" || cardVal ==="0"|| cardVal === "A"){
                 cardVal = 10
                 console.log("one: " + cardVal)
-
-            } else if(cardVal === "2" || "3" || "4" || "5" || "6" || "7" || "8"  || "9")  {
+              
+                totalValues.push(cardVal)
+                
+            } else if(cardVal === "2" || cardVal ==="3" || cardVal ==="4" || cardVal ==="5" || cardVal ==="6" || cardVal ==="7" || cardVal ==="8"  || cardVal ==="9")  {
                
                 console.log("Two: " + cardVal)
-                
+                console.log(parseInt(cardVal))
+               
+                totalValues.push(cardVal)
             }
+
+            console.log(totalValues)
             
           
            
@@ -138,7 +144,6 @@ $(document).ready(function() {
 
     //CP Hit BTN
     function hitMe(deckID) {
-
     $('#hitButton').click(function(e){
         e.preventDefault();
         $(".userHand").empty()
@@ -151,7 +156,6 @@ $(document).ready(function() {
         }).then(function(cards) {
             console.log(cards);
 
-
             for (var i = 0; i < 1; i++) {
                 userHand.push(cards.cards[i].code);
             }  
@@ -160,6 +164,7 @@ $(document).ready(function() {
             displayCards(userHand, userUL);
             //append an image tag to divs set in html(ask others about possibly adding two div tags for the users 2 cards. Can be the back of a playing card as example)
             sumOfHand()
+           
             //we need to add the value of the card into the array for playerHand
         });
        
