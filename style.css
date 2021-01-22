@@ -5,10 +5,12 @@ body {
 
 header {
   background-color: rgb(134, 155, 134);
+  border-bottom: 10px solid rgb(92, 87, 18);
 }
 
 .header-title {
   font-family: 'Press Start 2P', cursive;
+  color:wheat;
 }
 
 header h1 {
@@ -45,8 +47,8 @@ content {
 }
 
 .playArea {
-  background-color: green;
-  border-color: brown ;
+  background-color: rgb(54, 109, 54);
+  border-color: rgb(144, 69, 69) ;
   border-style: solid;
   border-width: 10px;
   border-radius: 600px;
