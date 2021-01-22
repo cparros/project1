@@ -170,6 +170,10 @@ content {
   height: 200px;
 }
 
+.img-of-player{
+  height: 200px;
+}
+
 button {
   background-color: rgb(134, 155, 134); 
   border: 5px solid rgb(92, 87, 18);

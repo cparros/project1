@@ -255,11 +255,16 @@ $(document).ready(function() {
 
 function diceBear () {
      var faceId = Math.floor(Math.random() * 10000);
-     console.log(faceId);
+     
+     //we can change this later if we have the time for the user to input their name or something
+     var userFaceID = Math.floor(Math.random() * 10000);
 
      var faceMaker = "https://avatars.dicebear.com/4.5/api/human/" + faceId + ".svg?background=%230000ff";
-     console.log(faceMaker);
+     var faceMakerUser = "https://avatars.dicebear.com/4.5/api/human/" + userFaceID + ".svg?background=%230000ff";
+    
      $(".img-of-dealer").attr("src", faceMaker);
+     $(".img-of-player").attr("src", faceMakerUser);
+
  }
 
 //We could use dicebear to have the user give us a dealer name and user name which will give them randomly generated avatars
