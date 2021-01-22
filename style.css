@@ -64,6 +64,15 @@ content {
 
 .score-div {
   border: solid; 
+  background-color: rgb(89, 102, 89);
+  border-color: rgb(92, 87, 18) ;
+  border-style: solid;
+  border-width: 10px;
+  border-radius: 600px;
+  width: 300px;
+  text-align: center;
+  /* padding-left: 30px; */
+  color: wheat;
 }
 
   .dealer-div {
