@@ -1,15 +1,45 @@
 body {
-  background-color: rgb(229, 233, 210);
+  background-color: rgb(192, 200, 150);
+  font-family: 'Fugaz One', cursive;
 }
 
 header {
-  border-bottom: black solid;
+  background-color: rgb(134, 155, 134);
+  border-bottom: 10px solid rgb(92, 87, 18);
+}
+
+.header-title {
+  font-family: 'Press Start 2P', cursive;
+  color:wheat;
 }
 
 header h1 {
   text-align: center;
   font-size: 50px;
   font-weight: 600;
+  padding-top: 50px;
+}
+
+.modal-style {
+  color:wheat;
+  text-decoration: none;
+}
+
+#modal-close {
+  color:wheat;
+}
+
+#ex1 {
+  background-color: rgb(134, 155, 134);
+  border-color: rgb(92, 87, 18) ;
+  border-style: solid;
+  border-width: 5px;
+  border-radius: 6%;
+  width: auto;
+  height: auto;
+  text-align: left;
+  color: wheat;
+  font-size:20px;
 }
 
 content {
@@ -17,8 +47,8 @@ content {
 }
 
 .playArea {
-  background-color: green;
-  border-color: brown ;
+  background-color: rgb(54, 109, 54);
+  border-color: rgb(144, 69, 69) ;
   border-style: solid;
   border-width: 10px;
   border-radius: 600px;
@@ -70,7 +100,7 @@ content {
   border-color: rgb(92, 87, 18) ;
   border-style: solid;
   border-width: 5px;
-  border-radius: 600px;
+  border-radius: 6%;
   width: 300px;
   text-align: center;
   /* padding-left: 30px; */
@@ -83,7 +113,7 @@ content {
     border-color: rgb(92, 87, 18) ;
     border-style: solid;
     border-width: 5px;
-    /* border-radius: 600px; */
+    border-radius: 6%;
     width: 300px;
     text-align: center;
     color: wheat;
@@ -96,12 +126,12 @@ content {
   border-color: rgb(92, 87, 18) ;
   border-style: solid;
   border-width: 5px;
-  /* border-radius: 600px; */
+  border-radius: 6%;
   width: 300px;
   text-align: center;
   color: wheat;
   height: 300px;
-  margin-top: 250px;
+  /* margin-top: 250px; */
 }
 
 .dialogue {
@@ -110,7 +140,7 @@ content {
   border-color: rgb(92, 87, 18) ;
   border-style: solid;
   border-width: 5px;
-  /* border-radius: 600px; */
+  border-radius: 6%;
   width: 300px;
   text-align: center;
   color: wheat;
@@ -138,4 +168,21 @@ content {
 
 .img-of-dealer{
   height: 200px;
+}
+
+button {
+  background-color: rgb(134, 155, 134); 
+  border: 5px solid rgb(92, 87, 18);
+  border-radius: 4%;
+  color: wheat;
+  padding: 15px;
+  text-align: center;
+  display: inline-block;
+  font-size: 22px;
+  width: auto;
+  margin: 4px;
+}
+
+button:hover {
+  opacity: .75;
 }
