@@ -6,13 +6,14 @@ var deckID;
 
 // Set variables for card values 
 
-var userWins // (total user wins)
-var userLosses // (tottal user losses)
+var userWins = 0 // (total user wins)
+var userLosses = 0 // (tottal user losses)
 var userScore; // (total value in hand)
 var dealerScore; // (total value in hand)
 var totalScore = []
 var totalValues = []
 var userBetTotal;
+var newGameBtn = $("#newGameButton")
 // Add bet totals to local storage?
 
 
@@ -26,7 +27,7 @@ $(document).ready(function() {
         var value = 0
         userHand.forEach(function(index){
             var cardVal = index[0]
-            var total = 0
+            
 
             if(cardVal === "J" || cardVal ==="K" || cardVal ==="Q" || cardVal ==="0"|| cardVal === "A"){
                 cardVal = 10
@@ -41,17 +42,48 @@ $(document).ready(function() {
                
                 totalValues.push(parseInt(cardVal))
             } 
-            console.log(totalValues.reduce((a, b) => a + b, 0))
+            var totalHandVal = totalValues.reduce((a, b) => a + b, 0) 
+            console.log(totalHandVal)
+            if(totalHandVal === 21) {
+                var winnerLoser = $('.winnerLoser')
+                // playArea.empty()
+
+                var winnerDiv = $('<div id="winner">')
+                winnerDiv.text("You WIN")
+                winnerLoser.append(winnerDiv)
+                userWins++
+
+            } else if(totalHandVal > 21 ) {
+                var winnerLoser= $('.winnerLoser')
+                // playArea.empty()
+
+                var loserDiv = $('<div id="loser">')
+                loserDiv.text("You LOSE")
+                winnerLoser.append(loserDiv)
+                userLosses++
+            }
         })
     }
 
     // when new game button is clicked
-    $("#newGameButton").on("click", function(event) {
+
+    newGameBtn.on("click", function(event) {
         event.preventDefault();
-        $(".dealerHand").empty();
+        $('.dealerHand').empty();
         userHand = [];
 
+
+        if($('#winner') || $('#loser') === true){
+        $('#winner').hide()
+        $('#loser').hide()
+        } else {
+        }
+
         //displaying back of cards for dealers hand
+        var wins = $('.winsScore')
+        var losses = $('.lossesScore')
+        wins.text("Wins: " + userWins)
+        losses.text("Losses: " + userLosses)
         var li = $("<li>");
         var li2 = $("<li>");
         var img = $("<img>").addClass("list-group-item cardImg");
@@ -64,7 +96,6 @@ $(document).ready(function() {
         $(".dealerHand").append(li2);
 
         shuffleCards();
-        
     });
 
     $("#stayButton").on("click", function(event) {
@@ -103,6 +134,7 @@ $(document).ready(function() {
             drawCards(deckID);
             
             hitMe(deckID)
+           
         });
 
 
@@ -131,7 +163,7 @@ $(document).ready(function() {
             var userUL = $(".userHand");
             displayCards(userHand, userUL);
             //append an image tag to divs set in html(ask others about possibly adding two div tags for the users 2 cards. Can be the back of a playing card as example)
-
+            sumOfHand()
             //we need to add the value of the card into the array for playerHand
         });
         var dealerDraw = "https://deckofcardsapi.com/api/deck/" + text + "/draw/?count=2";
