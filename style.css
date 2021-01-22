@@ -1,9 +1,14 @@
 body {
   background-color: rgb(229, 233, 210);
+  font-family: 'Fugaz One', cursive;
 }
 
 header {
   border-bottom: black solid;
+}
+
+.header-title {
+  font-family: 'Press Start 2P', cursive;
 }
 
 header h1 {
