@@ -36,11 +36,11 @@
         and can’t double on the second turn.).</li>
     </ol>
 
-    <a href="#" rel="modal:close">Close</a>
+   <button><a id="modal-close" href="#" rel="modal:close">Close</a></button>
   </div>
 
   <!-- Link to open the modal -->
-  <button><a href="#ex1" rel="modal:open">Rules</a></button>
+  <button><a class="modal-style" href="#ex1" rel="modal:open">Rules</a></button>
 </header>
 ​
 
@@ -91,11 +91,13 @@
 
         <div class="btn-container">
           <div class="row">
-            <div id="gambleButtons">
-              <button type="button" id="newGameButton" class="start-game">New Game</button>
-              <button type="button" id="hitButton" class="gamble">Hit</button>
-              <button type="button" id="stayButton" class="gamble">Stay</button>
-              <button type="button" id="doubleButton" class="gamble double">Double</button>
+            <div class="d-flex">
+              <div id="gambleButtons mx-auto">
+                <button type="button" id="newGameButton" class="start-game">New Game</button>
+                <button type="button" id="hitButton" class="gamble">Hit</button>
+                <button type="button" id="stayButton" class="gamble">Stay</button>
+                <!-- <button type="button" id="doubleButton" class="gamble double">Double</button> -->
+              </div>
             </div>
           </div>
         </div>
