@@ -6,6 +6,10 @@ header {
   border-bottom: black solid;
 }
 
+header h1 {
+  text-align: center;
+}
+
 content {
   padding-top: 50px;
 }
