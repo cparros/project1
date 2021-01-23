@@ -158,7 +158,11 @@ content {
   margin: 0 auto;
   text-align: center;
   border-radius: 400px;
+<<<<<<< HEAD
+  border-color: rgb(144, 69, 69) ;
+=======
   border-color: rgb(144, 69, 69);
+>>>>>>> 5d910a5c8208fac24d3084751c51b2f89f94e789
   border-width: 10px;
   border-style: solid;
 }
@@ -169,6 +173,10 @@ content {
 
 .img-of-player{
   height: 200px;
+}
+
+.close-modal {
+  visibility: hidden;
 }
 
 button {
