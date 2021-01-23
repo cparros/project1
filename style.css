@@ -148,7 +148,7 @@ content {
 } 
 
 
-#loser, #winner {
+#loser, #winner, #push {
   position: absolute;
   font-size:xx-large;
   color: wheat;
@@ -163,8 +163,6 @@ content {
   border-width: 10px;
   border-style: solid;
 }
-
-  
 
 .img-of-dealer{
   height: 200px;
