@@ -103,8 +103,9 @@ content {
   border-radius: 6%;
   width: 300px;
   text-align: center;
-  /* padding-left: 30px; */
+  padding-top: 30px;
   color: wheat;
+  height: 250px;
 }
 
   .dealer-div {
