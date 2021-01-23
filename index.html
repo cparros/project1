@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,6 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Fugaz+One&family=Press+Start+2P&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
   <header>
     <h1 class="header-title">Team 6 BlackJack</h1>
@@ -30,32 +32,33 @@
         <li>If you tie with the dealer, it is counted as a push and you both get your money back.</li>
         <li>If you are dealt 21 at the start (Ace & 10), you have a Blackjack.</li>
         <li>The dealer will hit until their cards total 17 or higher.</li>
-        <li>Doubling is like a hit, only the bet is doubled and you only get one more card(can’t hit again after doubling
+        <li>Doubling is like a hit, only the bet is doubled and you only get one more card(can’t hit again after
+          doubling
           and can’t double on the second turn.).</li>
       </ol>
 
-    <button><a id="modal-close" href="#" rel="modal:close">Close</a></button>
+      <button><a id="modal-close" href="#" rel="modal:close">Close</a></button>
     </div>
 
     <!-- Link to open the modal -->
     <button><a class="modal-style" href="#ex1" rel="modal:open">Rules</a></button>
   </header>
-​
+  ​
 
 
   <div class="container-fluid content">
     <div class="row">
       <div class="col-md-2">
-        <div class="score-div">
-          <h3>Score Div</h3>
-          <p class="winsScore">Wins:</p>
-          <p class="lossesScore">Losses:</p>
-        </div>
-        <br>
         <div class="player-div">
           <h3>Player</h3>
           <img class="img-of-player">
           <p>Player</p>
+        </div>
+        <br>
+        <div class="score-div">
+          <h3>Score Div</h3>
+          <p class="winsScore">Wins:</p>
+          <p class="lossesScore">Losses:</p>
         </div>
       </div>
       <div class="col-md-8">
@@ -124,6 +127,10 @@
       </div>
     </div>
   </div>
+
+  <footer class="footer fixed-bottom">
+    <p class="text-center">Copyright © 2021 </p>
+  </footer>
 
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
