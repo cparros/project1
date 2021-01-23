@@ -149,20 +149,16 @@ content {
 
 #loser, #winner, #push {
   position: absolute;
-  font-size:xx-large;
+  font-size: 400px;
   color: wheat;
-
   height: 70%;
   width: 100%;
   background-color:rgb(54, 109, 54);
-
   z-index: 1;
   margin: 0 auto;
   text-align: center;
   border-radius: 400px;
-
   border-color: rgb(144, 69, 69);
-
   border-width: 10px;
   border-style: solid;
 }
