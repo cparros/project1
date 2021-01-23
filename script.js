@@ -12,8 +12,10 @@ var userScore; // (total value in hand)
 var dealerScore; // (total value in hand)
 var totalScore = []
 var totalValues = []
+var totalDealerValues = [];
 var userBetTotal;
 var newGameBtn = $("#newGameButton")
+var endOfGame;
 // Add bet totals to local storage?
 
 
@@ -23,103 +25,174 @@ $(document).ready(function() {
     diceBear();
 
     function sumOfHand() {
-        totalValues = []
-        var value = 0
+        totalValues = [];
+        var value = 0;
         userHand.forEach(function(index){
-            var cardVal = index[0]
+            var cardVal = index[0];
             
 
             if(cardVal === "J" || cardVal ==="K" || cardVal ==="Q" || cardVal ==="0"|| cardVal === "A"){
-                cardVal = 10
-                console.log("one: " + cardVal)
-              
-                totalValues.push(cardVal)
+                
+                cardVal = 10;
+                totalValues.push(cardVal);
                 
             } else if(cardVal === "2" || cardVal ==="3" || cardVal ==="4" || cardVal ==="5" || cardVal ==="6" || cardVal ==="7" || cardVal ==="8"  || cardVal ==="9")  {
-               
-                console.log("Two: " + cardVal)
-                console.log(parseInt(cardVal))
-               
-                totalValues.push(parseInt(cardVal))
-            } 
-            var totalHandVal = totalValues.reduce((a, b) => a + b, 0) 
-            console.log(totalHandVal)
-            if(totalHandVal === 21) {
-                var winnerLoser = $('.winnerLoser')
-                // playArea.empty()
+                
+                totalValues.push(parseInt(cardVal));
 
-                var winnerDiv = $('<div id="winner">')
-                winnerDiv.text("You WIN")
-                winnerLoser.append(winnerDiv)
-                userWins++
+            } 
+            var totalHandVal = totalValues.reduce((a, b) => a + b, 0);
+            userScore = totalHandVal;
+            console.log("TOTAL HAND VALUE OF USER" + totalHandVal);
+            // set a variable here to check the dealers hand total so we can cross referece them for a push
+            if(totalHandVal === 21) {
+                //var winnerLoser = $('.winnerLoser')
+                //var playArea = document.getElementById("playArea");
+                
+                //playArea.empty()
+
+                //var winnerDiv = $('<div id="winner">')
+                
+                //winnerDiv.text("You WIN")
+                //winnerLoser.append(winnerDiv)
+
+                document.getElementById("winner").style.display = "block";
+                endOfGame = true;
+                userWins++;
+                displayScores();
+
 
             } else if(totalHandVal > 21 ) {
-                var winnerLoser= $('.winnerLoser')
-                // playArea.empty()
+                //var winnerLoser= $('.winnerLoser')
+                //var playArea = document.getElementById("playArea");
+                //playArea.empty()
 
-                var loserDiv = $('<div id="loser">')
-                loserDiv.text("You LOSE")
-                winnerLoser.append(loserDiv)
-                userLosses++
+                //var loserDiv = $('<div id="loser">')
+                //loserDiv.text("You LOSE")
+                //winnerLoser.append(loserDiv)
+
+                document.getElementById("loser").style.display = "block";
+                endOfGame = true;
+                userLosses++;
+                displayScores();
             }
         })
+    }
+
+    //This will be called at the end of the compareResults function as well as in other places where the game can end before then. Scores are also messed up with buttons being clicked after a game is over so im going to suggest hiding them after a game over and showing them at the start of a game
+    function displayScores()    {
+        $(".winsScore").empty();
+        $(".lossesScore").empty();
+        $(".winsScore").append("Wins: " + userWins);
+        $(".lossesScore").append("Losses: " + userLosses);
     }
 
     // when new game button is clicked
 
     newGameBtn.on("click", function(event) {
         event.preventDefault();
+        endOfGame = false;
+        document.getElementById("winner").style.display = "none";
+        document.getElementById("push").style.display = "none";
+        document.getElementById("loser").style.display = "none";
         $('.dealerHand').empty();
+        $('.userHand').empty();
         userHand = [];
 
 
         if($('#winner') || $('#loser') === true){
-        $('#winner').hide()
-        $('#loser').hide()
+        $('#winner').hide();
+        $('#loser').hide();
         } else {
         }
-
-        //displaying back of cards for dealers hand
-        var wins = $('.winsScore')
-        var losses = $('.lossesScore')
-        wins.text("Wins: " + userWins)
-        losses.text("Losses: " + userLosses)
-        var li = $("<li>");
-        var li2 = $("<li>");
-        var img = $("<img>").addClass("list-group-item cardImg");
-        var img2 = $("<img>").addClass("list-group-item cardImg");
-        $(img).attr("src", backOfCard);
-        $(img2).attr("src", backOfCard);
-        $(li).append(img);
-        $(li2).append(img2);
-        $(".dealerHand").append(li);
-        $(".dealerHand").append(li2);
 
         shuffleCards();
     });
 
     $("#stayButton").on("click", function(event) {
-        //needs
-        console.log(deckID);
+        if (endOfGame === true) {
+            return;
+        }
+
+        totalDealerValues = [];
+
+        for (var i = 0; i < dealerHand.length; i++) {
+            var valueOfCard = dealerHand[i].charAt(0);
+
+            if(valueOfCard === "J" || valueOfCard ==="K" || valueOfCard ==="Q" || valueOfCard ==="0"|| valueOfCard === "A"){
+                valueOfCard = 10;              
+                totalDealerValues.push(valueOfCard);
+                
+            } else if(valueOfCard === "2" || valueOfCard ==="3" || valueOfCard ==="4" || valueOfCard ==="5" || valueOfCard ==="6" || valueOfCard ==="7" || valueOfCard ==="8"  || valueOfCard ==="9")  {
+                              
+                totalDealerValues.push(parseInt(valueOfCard));
+            }
+            console.log("DealersCards:"+totalDealerValues);
+            var totalHandVal = totalDealerValues.reduce((a, b) => a + b, 0);
+            dealerScore = totalHandVal;
+        }
+
+        var totalHandValOfUser = totalValues.reduce((a, b) => a + b, 0);
+        if(totalHandVal === 21 && totalHandValOfUser < 21) {
+            document.getElementById("loser").style.display = "block";
+            endOfGame = true;
+            userLosses++;
+            displayScores();
+            return;
+        }
+        
         //change to while after working
-        if (dealerScore <= 17) {
-            
+        //modified a bit since tried getting it to work with just an if/else and wasnt due to how the api value is grabbed, might need to tell it to wait or something?
+        
+        /**
+        if (dealerScore < 17) {
+            console.log("deep");
             var dealerDraw = "https://deckofcardsapi.com/api/deck/" + deckID + "/draw/?count=1";
 
             $.ajax({
                 url: dealerDraw,
                 method: "GET"
             }).then(function(deck) {
-                var li = $("<li>");
-                var img = $("<img>").attr("class", "list-group-item cardImg");
-                $(img).attr("src", "https://deckofcardsapi.com/static/img/" + deck.cards[0].code + ".png")
-                $(li).append(img);
-                var dealerUL = $(".dealerHand");
-                $(dealerUL).append(li)
-            });
+                dealerHand.push(deck.cards[0].code);
+                var userUL = $(".dealerHand");
+                var cardImage = deck.cards[0].image;
+                addCard(userUL, cardImage);
 
+                var cardValue = dealerHand[dealerHand.length - 1].charAt(0);
+                console.log("this is val"+cardValue);
+
+                if(cardValue === "J" || cardValue ==="K" || cardValue ==="Q" || cardValue ==="0"|| cardValue === "A"){
+                    
+                    cardValue = 10;
+                    totalDealerValues.push(cardValue);
+                    
+                } else if(cardValue === "2" || cardValue ==="3" || cardValue ==="4" || cardValue ==="5" || cardValue ==="6" || cardValue ==="7" || cardValue ==="8"  || cardValue ==="9")  {
+                   
+                    totalDealerValues.push(parseInt(cardValue));
+
+                }
+                totalHandVal = totalDealerValues.reduce((a, b) => a + b, 0);
+                dealerScore = totalHandVal;
+            });
+            if(totalHandVal > 21 ) {
+                document.getElementById("winner").style.display = "block";
+                endOfGame = true;
+                userWins++;
+                displayScores();
+                return;
+            }
+            //call some compare type function here to compare the values of user and dealer
+            console.log("TOTAL HAND VALUE OF DEALER" + totalHandVal);
+            compareHands();
             
+        } else {
+            console.log("TOTAL HAND VALUE OF DEALER" + totalHandVal);
+            compareHands();
         }
+        */
+            console.log("TOTAL HAND VALUE OF DEALER" + totalHandVal);
+            compareHands();
+
     });
 
      //shuffles cards throughout the api and gets deck id
@@ -132,8 +205,6 @@ $(document).ready(function() {
         }).then(function(deck) {
             deckID = deck.deck_id;
             drawCards(deckID);
-            
-            hitMe(deckID)
            
         });
 
@@ -142,95 +213,108 @@ $(document).ready(function() {
 
 
     function drawCards(text) {
-        //set currentHand div to empty for both players
-        $(".userHand").empty();
+        userHand = [];
+        dealerHand = [];
         userScore = 0;
         dealerScore = 0;
-        // console.log(text);
-
+    
         var userDraw = "https://deckofcardsapi.com/api/deck/" + text + "/draw/?count=2";
         $.ajax({
             url: userDraw,
             method: "GET"
         }).then(function(cards) {
-            console.log(cards);
-
-
             for (var i = 0; i < cards.cards.length; i++) {
                 userHand.push(cards.cards[i].code);
-            }  
-            console.log(userHand);
-            var userUL = $(".userHand");
-            displayCards(userHand, userUL);
-            //append an image tag to divs set in html(ask others about possibly adding two div tags for the users 2 cards. Can be the back of a playing card as example)
-            sumOfHand()
-            //we need to add the value of the card into the array for playerHand
+            }
+            for (var i = 0; i < userHand.length; i++) {
+                var li = $("<li>");
+                var img = $("<img>").attr("class", "list-group-item cardImg");
+                $(img).attr("src", cards.cards[i].images.png);
+                $(li).append(img);
+                $(".userHand").append(li);
+            }
+           
+            sumOfHand();
         });
         var dealerDraw = "https://deckofcardsapi.com/api/deck/" + text + "/draw/?count=2";
         $.ajax({
             url: dealerDraw,
             method: "GET"
         }).then(function(cards) {
-            // var dealerUL = $(".dealerHand");
-            // dealCards(dealerHand, dealerUL);
-            //append an image tag to divs set in html(ask others about possibly adding two div tags for the users 2 cards. Can be the back of a playing card as example)
 
-            //we need to add the value of the card into the array for dealerHand
-            console.log(cards);
+            for (var i = 0; i < cards.cards.length; i++) {
+                dealerHand.push(cards.cards[i].code);
+            }
+                
+            var li = $("<li>");
+            var li2 = $("<li>");
+            var img = $("<img>").addClass("list-group-item cardImg");
+            var img2 = $("<img>").addClass("list-group-item cardImg");
+            $(img).attr("src", cards.cards[0].images.png);
+            $(img2).attr("src", backOfCard);
+            $(li).append(img);
+            $(li2).append(img2);
+            $(".dealerHand").append(li);
+            $(".dealerHand").append(li2);
         });
        
     }
 
-    //handArr param = dealer or user array & dealerOrUser = dealer or user <ul>
-    function displayCards(handArr, dealerOrUser) {
-        for (var i = 0; i < handArr.length; i++) {
-            var li = $("<li>");
-            var img = $("<img>").attr("class", "list-group-item cardImg");
-            $(img).attr("src", "https://deckofcardsapi.com/static/img/" + handArr[i] + ".png")
-            $(li).append(img);
-            $(dealerOrUser).append(li)
-        }
+    
+
+
+    function addCard(dealerOrUser, cardImgLink)  {
+        var li = $("<li>");
+        var img = $("<img>").attr("class", "list-group-item cardImg");
+        $(img).attr("src", cardImgLink);
+        $(li).append(img);
+        $(dealerOrUser).append(li);
     }
 
     //CP Hit BTN
-    function hitMe(deckID) {
+    //function hitMe(deckID) 
     $('#hitButton').click(function(e){
         e.preventDefault();
-        $(".userHand").empty()
-        console.log('clicked')
+        if (endOfGame === true) {
+            return;
+        }
+        //$(".userHand").empty()
         var userDraw = "https://deckofcardsapi.com/api/deck/" + deckID + "/draw/?count=1";
-        console.log(userDraw)
         $.ajax({
             url: userDraw,
             method: "GET"
         }).then(function(cards) {
-            console.log(cards);
 
-            for (var i = 0; i < 1; i++) {
-                userHand.push(cards.cards[i].code);
-            }  
-            console.log(userHand);
+            userHand.push(cards.cards[0].code);
             var userUL = $(".userHand");
-            displayCards(userHand, userUL);
+            var cardImage = cards.cards[0].image;
+            addCard(userUL, cardImage);
             //append an image tag to divs set in html(ask others about possibly adding two div tags for the users 2 cards. Can be the back of a playing card as example)
-            sumOfHand()
+            sumOfHand();
            
             //we need to add the value of the card into the array for playerHand
         });
        
-    })
+    });
 
+    function compareHands () {
+        console.log("user final score - " +userScore);
+        console.log("dealer final score - " +dealerScore);
+        if (userScore === dealerScore)  {
+            document.getElementById("push").style.display = "block";
+            endOfGame = true;
+        } else if (userScore > dealerScore) {
+            document.getElementById("winner").style.display = "block";
+            endOfGame = true;
+            userWins++;
+            displayScores();
+        } else if (dealerScore > userScore) {
+            document.getElementById("loser").style.display = "block";
+            endOfGame = true;
+            userLosses++;
+            displayScores();
+        }
     }
-
-    
-
-
-    
-
-    //testing
-    //console.log(deckID);
-    //drawCards();
-    // diceBear();
 
 
 
