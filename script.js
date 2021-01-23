@@ -6,16 +6,18 @@ var deckID;
 
 // Set variables for card values 
 
-var userWins = 0 // (total user wins)
-var userLosses = 0 // (tottal user losses)
+var userWins = 0; // (total user wins)
+var userLosses = 0; // (tottal user losses)
 var userScore; // (total value in hand)
 var dealerScore; // (total value in hand)
-var totalScore = []
-var totalValues = []
+var totalScore = [];
+var totalValues = [];
 var totalDealerValues = [];
 var userBetTotal;
 var newGameBtn = $("#newGameButton")
 var endOfGame;
+var dealerDrawingCards = [];
+var secondCardImg;
 // Add bet totals to local storage?
 
 
@@ -42,56 +44,50 @@ $(document).ready(function() {
 
             } 
             var totalHandVal = totalValues.reduce((a, b) => a + b, 0);
+            var handVal = $('.yourHand');
+            handVal.text("Your Hand:"+totalHandVal);
             userScore = totalHandVal;
             console.log("TOTAL HAND VALUE OF USER" + totalHandVal);
             // set a variable here to check the dealers hand total so we can cross referece them for a push
             if(totalHandVal === 21) {
-                //var winnerLoser = $('.winnerLoser')
-                //var playArea = document.getElementById("playArea");
-                
-                //playArea.empty()
-
-                //var winnerDiv = $('<div id="winner">')
-                
-                //winnerDiv.text("You WIN")
-                //winnerLoser.append(winnerDiv)
-
-                document.getElementById("winner").style.display = "block";
+                //document.getElementById("winner").style.display = "block";
                 endOfGame = true;
                 userWins++;
                 displayScores();
+                displayWinLoss("winner");
 
 
             } else if(totalHandVal > 21 ) {
-                //var winnerLoser= $('.winnerLoser')
-                //var playArea = document.getElementById("playArea");
-                //playArea.empty()
-
-                //var loserDiv = $('<div id="loser">')
-                //loserDiv.text("You LOSE")
-                //winnerLoser.append(loserDiv)
-
-                document.getElementById("loser").style.display = "block";
                 endOfGame = true;
                 userLosses++;
                 displayScores();
+                displayWinLoss("loser");
             }
         })
     }
 
     //This will be called at the end of the compareResults function as well as in other places where the game can end before then. Scores are also messed up with buttons being clicked after a game is over so im going to suggest hiding them after a game over and showing them at the start of a game
+    
     function displayScores()    {
         $(".winsScore").empty();
         $(".lossesScore").empty();
         $(".winsScore").append("Wins: " + userWins);
         $(".lossesScore").append("Losses: " + userLosses);
     }
+    
+    function displayWinLoss(outcome)   {
+        setTimeout(function(){
+            document.getElementById(outcome).style.display = "block";
+        }, 1500);
+    }
+
 
     // when new game button is clicked
 
     newGameBtn.on("click", function(event) {
         event.preventDefault();
         endOfGame = false;
+        dealerDrawingCards = [];
         document.getElementById("winner").style.display = "none";
         document.getElementById("push").style.display = "none";
         document.getElementById("loser").style.display = "none";
@@ -110,7 +106,7 @@ $(document).ready(function() {
     });
 
     $("#stayButton").on("click", function(event) {
-        if (endOfGame === true) {
+        if (endOfGame) {
             return;
         }
 
@@ -134,63 +130,53 @@ $(document).ready(function() {
 
         var totalHandValOfUser = totalValues.reduce((a, b) => a + b, 0);
         if(totalHandVal === 21 && totalHandValOfUser < 21) {
-            document.getElementById("loser").style.display = "block";
             endOfGame = true;
             userLosses++;
             displayScores();
+            displayWinLoss("loser");
             return;
         }
+
+
         
         //change to while after working
         //modified a bit since tried getting it to work with just an if/else and wasnt due to how the api value is grabbed, might need to tell it to wait or something?
-        
-        /**
-        if (dealerScore < 17) {
-            console.log("deep");
-            var dealerDraw = "https://deckofcardsapi.com/api/deck/" + deckID + "/draw/?count=1";
+        var count = 0;
+        var dealerTotalHandVal;
+        while (dealerScore < 17) {
+            console.log("THE WHILE LOOP IS USED");
+            var cardArray = dealerDrawingCards[i];
+            var cardValue = cardArray[0].charAt(0);
+            var cardImg = cardArray[1];
+            var dealerUL = $(".dealerHand");
 
-            $.ajax({
-                url: dealerDraw,
-                method: "GET"
-            }).then(function(deck) {
-                dealerHand.push(deck.cards[0].code);
-                var userUL = $(".dealerHand");
-                var cardImage = deck.cards[0].image;
-                addCard(userUL, cardImage);
+            addCard(dealerUL, cardImg);
 
-                var cardValue = dealerHand[dealerHand.length - 1].charAt(0);
-                console.log("this is val"+cardValue);
+            if(cardValue === "J" || cardValue ==="K" || cardValue ==="Q" || cardValue ==="0"|| cardValue === "A"){
+                cardValue = 10;              
+                totalDealerValues.push(cardValue);
+                
+            } else if(cardValue === "2" || cardValue ==="3" || cardValue ==="4" || cardValue ==="5" || cardValue ==="6" || cardValue ==="7" || cardValue ==="8"  || cardValue ==="9")  {
+                              
+                totalDealerValues.push(parseInt(cardValue));
+            }
+            dealerTotalHandVal = totalDealerValues.reduce((a, b) => a + b, 0);
+            console.log(dealerTotalHandVal);
+            dealerScore = dealerTotalHandVal;
 
-                if(cardValue === "J" || cardValue ==="K" || cardValue ==="Q" || cardValue ==="0"|| cardValue === "A"){
-                    
-                    cardValue = 10;
-                    totalDealerValues.push(cardValue);
-                    
-                } else if(cardValue === "2" || cardValue ==="3" || cardValue ==="4" || cardValue ==="5" || cardValue ==="6" || cardValue ==="7" || cardValue ==="8"  || cardValue ==="9")  {
-                   
-                    totalDealerValues.push(parseInt(cardValue));
-
-                }
-                totalHandVal = totalDealerValues.reduce((a, b) => a + b, 0);
-                dealerScore = totalHandVal;
-            });
-            if(totalHandVal > 21 ) {
-                document.getElementById("winner").style.display = "block";
+            count++;
+        }
+        console.log(dealerTotalHandVal);
+            if(dealerTotalHandVal > 21 ) {
                 endOfGame = true;
                 userWins++;
                 displayScores();
+                displayWinLoss("winner");
                 return;
-            }
-            //call some compare type function here to compare the values of user and dealer
-            console.log("TOTAL HAND VALUE OF DEALER" + totalHandVal);
-            compareHands();
-            
-        } else {
-            console.log("TOTAL HAND VALUE OF DEALER" + totalHandVal);
-            compareHands();
         }
-        */
-            console.log("TOTAL HAND VALUE OF DEALER" + totalHandVal);
+
+        
+            console.log("TOTAL HAND VALUE OF DEALER" + dealerTotalHandVal);
             compareHands();
 
     });
@@ -245,6 +231,14 @@ $(document).ready(function() {
             for (var i = 0; i < cards.cards.length; i++) {
                 dealerHand.push(cards.cards[i].code);
             }
+
+            $('#stayButton').click(function () {
+                if (this.id == 'stayButton') {
+                    $(img2).attr("src", cards.cards[1].images.png);
+                }
+            });
+
+            secondCardImg = cards.cards[1].images.png;
                 
             var li = $("<li>");
             var li2 = $("<li>");
@@ -256,6 +250,20 @@ $(document).ready(function() {
             $(li2).append(img2);
             $(".dealerHand").append(li);
             $(".dealerHand").append(li2);
+        });
+        var dealerSetOfHands = "https://deckofcardsapi.com/api/deck/" + text + "/draw/?count=20";
+        $.ajax({
+            url: dealerSetOfHands,
+            method: "GET"
+        }).then(function(cards) {
+            for (var i = 0; i < 20; i++) {
+                var codeAndImage = [];
+                codeAndImage.push(cards.cards[i].code);
+                codeAndImage.push(cards.cards[i].image);
+
+                dealerDrawingCards.push(codeAndImage);
+            }
+            console.log(dealerDrawingCards);
         });
        
     }
@@ -271,14 +279,12 @@ $(document).ready(function() {
         $(dealerOrUser).append(li);
     }
 
-    //CP Hit BTN
-    //function hitMe(deckID) 
+ 
     $('#hitButton').click(function(e){
         e.preventDefault();
-        if (endOfGame === true) {
+        if (endOfGame) {
             return;
         }
-        //$(".userHand").empty()
         var userDraw = "https://deckofcardsapi.com/api/deck/" + deckID + "/draw/?count=1";
         $.ajax({
             url: userDraw,
@@ -300,40 +306,26 @@ $(document).ready(function() {
     function compareHands () {
         console.log("user final score - " +userScore);
         console.log("dealer final score - " +dealerScore);
-        if (userScore === dealerScore)  {
-            document.getElementById("push").style.display = "block";
+        if (userScore === dealerScore) {
             endOfGame = true;
+            displayWinLoss("push");
+        } else if (userScore === 21 && dealerScore === 21) {
+            endOfGame = true;
+            displayWinLoss("push");
         } else if (userScore > dealerScore) {
-            document.getElementById("winner").style.display = "block";
             endOfGame = true;
             userWins++;
             displayScores();
+            displayWinLoss("winner");
         } else if (dealerScore > userScore) {
-            document.getElementById("loser").style.display = "block";
             endOfGame = true;
             userLosses++;
             displayScores();
+            displayWinLoss("loser");
         }
     }
 
 
-
-
-//will probably need some variable that accounts for if this is the first turn, due to doubling down only being an option then(will use this variable to hide the double button after first hit)
-//”https://deckofcardsapi.com/api/deck/” + deckID + “/draw/?count=2”
-// create hit button event listener for user
-// while loop with if statements to determine if user goes above 21 or clicks stay
-// while loop where dealer draws cards until reaching 17 or higher, this will utilize if/else trees to see where the current value is and if they should keep hitting
-
-
-
-
-// function compareResults
-//will basically compare the values of the user array against the values of the dealer array
-//will update the score with the current bet size(winning adds the bet, losing subtracts the bet)
-
-//function generateRandomFace 
-//https://github.com/public-apis/public-apis
 
 //dicebear info
 

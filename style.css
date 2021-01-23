@@ -151,14 +151,18 @@ content {
   position: absolute;
   font-size:xx-large;
   color: wheat;
+
   height: 70%;
   width: 100%;
   background-color:rgb(54, 109, 54);
+
   z-index: 1;
   margin: 0 auto;
   text-align: center;
   border-radius: 400px;
-  border-color: brown;
+
+  border-color: rgb(144, 69, 69);
+
   border-width: 10px;
   border-style: solid;
 }
@@ -169,6 +173,10 @@ content {
 
 .img-of-player{
   height: 200px;
+}
+
+.close-modal {
+  visibility: hidden;
 }
 
 button {
