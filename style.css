@@ -93,7 +93,8 @@ content {
 }
 
 .score-div {
-  border: solid; 
+  border: solid;
+  float: left; 
   background-color: rgb(134, 155, 134);
   border-color: rgb(92, 87, 18) ;
   border-style: solid;
@@ -108,12 +109,14 @@ content {
 
   .dealer-div {
     border: solid; 
+    float: right;
     background-color: rgb(134, 155, 134);
     border-color: rgb(92, 87, 18) ;
     border-style: solid;
     border-width: 5px;
     border-radius: 6%;
     width: 300px;
+    margin-bottom: 10px;
     text-align: center;
     color: wheat;
     height: 300px;
@@ -121,10 +124,12 @@ content {
 
 .player-div {
   border: solid; 
+  float: left;
   background-color: rgb(134, 155, 134);
   border-color: rgb(92, 87, 18) ;
   border-style: solid;
   border-width: 5px;
+  margin-bottom: 10px;
   border-radius: 6%;
   width: 300px;
   text-align: center;
@@ -135,6 +140,7 @@ content {
 
 .dialogue {
   border: solid;
+  float: right; 
   background-color: rgb(134, 155, 134);
   border-color: rgb(92, 87, 18) ;
   border-style: solid;
@@ -149,7 +155,7 @@ content {
 
 #loser, #winner, #push {
   position: absolute;
-  font-size: 400px;
+  font-size: 50px;
   color: wheat;
   height: 70%;
   width: 100%;

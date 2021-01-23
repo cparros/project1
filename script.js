@@ -33,7 +33,7 @@ $(document).ready(function() {
             var cardVal = index[0];
             
 
-            if(cardVal === "J" || cardVal ==="K" || cardVal ==="Q" || cardVal ==="0"|| cardVal === "A"){
+            if(cardVal === "J" || cardVal ==="K" || cardVal ==="Q" || cardVal ==="0" || cardVal === "A"){
                 
                 cardVal = 10;
                 totalValues.push(cardVal);
@@ -41,8 +41,16 @@ $(document).ready(function() {
             } else if(cardVal === "2" || cardVal ==="3" || cardVal ==="4" || cardVal ==="5" || cardVal ==="6" || cardVal ==="7" || cardVal ==="8"  || cardVal ==="9")  {
                 
                 totalValues.push(parseInt(cardVal));
-
             } 
+
+            // if (cardVal === "A" && userScore < 11 || cardVal === "A" && dealerScore < 11 ){
+            //     cardVal = 11;
+            //     totalValues.push(cardVal);
+            // } else if (cardVal === "A" && userScore > 11 || cardVal === "A" && dealerScore > 11 ) {
+            //     cardVal = 1; 
+            //     totalValues.push(cardVal);
+            // }
+
             var totalHandVal = totalValues.reduce((a, b) => a + b, 0);
             var handVal = $('.yourHand');
             handVal.text("Your Hand:"+totalHandVal);
