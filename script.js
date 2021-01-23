@@ -31,35 +31,43 @@ $(document).ready(function() {
 
             if(cardVal === "J" || cardVal ==="K" || cardVal ==="Q" || cardVal ==="0"|| cardVal === "A"){
                 cardVal = 10
-                console.log("one: " + cardVal)
+                console.log("Card Value1: " + cardVal)
               
                 totalValues.push(cardVal)
                 
             } else if(cardVal === "2" || cardVal ==="3" || cardVal ==="4" || cardVal ==="5" || cardVal ==="6" || cardVal ==="7" || cardVal ==="8"  || cardVal ==="9")  {
                
-                console.log("Two: " + cardVal)
+                console.log("Card Value2: " + cardVal)
                 console.log(parseInt(cardVal))
                
                 totalValues.push(parseInt(cardVal))
             } 
             var totalHandVal = totalValues.reduce((a, b) => a + b, 0) 
             console.log(totalHandVal)
+            // set a variable here to check the dealers hand total so we can cross referece them for a push
             if(totalHandVal === 21) {
-                var winnerLoser = $('.winnerLoser')
-                // playArea.empty()
+                //var winnerLoser = $('.winnerLoser')
+                //var playArea = document.getElementById("playArea");
+                
+                //playArea.empty()
 
-                var winnerDiv = $('<div id="winner">')
-                winnerDiv.text("You WIN")
-                winnerLoser.append(winnerDiv)
+                //var winnerDiv = $('<div id="winner">')
+                
+                //winnerDiv.text("You WIN")
+                //winnerLoser.append(winnerDiv)
+                document.getElementById("winner").style.display = "block";
                 userWins++
 
             } else if(totalHandVal > 21 ) {
-                var winnerLoser= $('.winnerLoser')
-                // playArea.empty()
+                //var winnerLoser= $('.winnerLoser')
+                //var playArea = document.getElementById("playArea");
+                //playArea.empty()
 
-                var loserDiv = $('<div id="loser">')
-                loserDiv.text("You LOSE")
-                winnerLoser.append(loserDiv)
+                //var loserDiv = $('<div id="loser">')
+                
+                //loserDiv.text("You LOSE")
+                //winnerLoser.append(loserDiv)
+                document.getElementById("loser").style.display = "block";
                 userLosses++
             }
         })
@@ -69,7 +77,10 @@ $(document).ready(function() {
 
     newGameBtn.on("click", function(event) {
         event.preventDefault();
+        document.getElementById("winner").style.display = "none";
+        document.getElementById("loser").style.display = "none";
         $('.dealerHand').empty();
+        $('.userHand').empty();
         userHand = [];
 
 
@@ -78,22 +89,6 @@ $(document).ready(function() {
         $('#loser').hide()
         } else {
         }
-
-        //displaying back of cards for dealers hand
-        var wins = $('.winsScore')
-        var losses = $('.lossesScore')
-        wins.text("Wins: " + userWins)
-        losses.text("Losses: " + userLosses)
-        var li = $("<li>");
-        var li2 = $("<li>");
-        var img = $("<img>").addClass("list-group-item cardImg");
-        var img2 = $("<img>").addClass("list-group-item cardImg");
-        $(img).attr("src", backOfCard);
-        $(img2).attr("src", backOfCard);
-        $(li).append(img);
-        $(li2).append(img2);
-        $(".dealerHand").append(li);
-        $(".dealerHand").append(li2);
 
         shuffleCards();
     });
@@ -120,6 +115,7 @@ $(document).ready(function() {
 
             
         }
+
     });
 
      //shuffles cards throughout the api and gets deck id
@@ -132,8 +128,6 @@ $(document).ready(function() {
         }).then(function(deck) {
             deckID = deck.deck_id;
             drawCards(deckID);
-            
-            hitMe(deckID)
            
         });
 
@@ -142,95 +136,94 @@ $(document).ready(function() {
 
 
     function drawCards(text) {
-        //set currentHand div to empty for both players
-        $(".userHand").empty();
+        userHand = [];
+        dealerHand = [];
         userScore = 0;
         dealerScore = 0;
-        // console.log(text);
-
+    
         var userDraw = "https://deckofcardsapi.com/api/deck/" + text + "/draw/?count=2";
         $.ajax({
             url: userDraw,
             method: "GET"
         }).then(function(cards) {
-            console.log(cards);
-
-
+            console.log("userHand Length: "+userHand.length);
             for (var i = 0; i < cards.cards.length; i++) {
                 userHand.push(cards.cards[i].code);
-            }  
-            console.log(userHand);
-            var userUL = $(".userHand");
-            displayCards(userHand, userUL);
-            //append an image tag to divs set in html(ask others about possibly adding two div tags for the users 2 cards. Can be the back of a playing card as example)
-            sumOfHand()
-            //we need to add the value of the card into the array for playerHand
+            }
+            for (var i = 0; i < userHand.length; i++) {
+                var li = $("<li>");
+                var img = $("<img>").attr("class", "list-group-item cardImg");
+                $(img).attr("src", cards.cards[i].images.png);
+                $(li).append(img);
+                $(".userHand").append(li);
+            }
+           
+            sumOfHand();
         });
         var dealerDraw = "https://deckofcardsapi.com/api/deck/" + text + "/draw/?count=2";
         $.ajax({
             url: dealerDraw,
             method: "GET"
         }).then(function(cards) {
-            // var dealerUL = $(".dealerHand");
-            // dealCards(dealerHand, dealerUL);
-            //append an image tag to divs set in html(ask others about possibly adding two div tags for the users 2 cards. Can be the back of a playing card as example)
+             console.log("TEST" + cards.cards.length);
 
-            //we need to add the value of the card into the array for dealerHand
-            console.log(cards);
+             
+
+            for (var i = 0; i < cards.cards.length; i++) {
+                dealerHand.push(cards.cards[i].code);
+            }
+                
+            var li = $("<li>");
+            var li2 = $("<li>");
+            var img = $("<img>").addClass("list-group-item cardImg");
+            var img2 = $("<img>").addClass("list-group-item cardImg");
+            $(img).attr("src", cards.cards[0].images.png);
+            $(img2).attr("src", backOfCard);
+            $(li).append(img);
+            $(li2).append(img2);
+            $(".dealerHand").append(li);
+            $(".dealerHand").append(li2);
         });
        
     }
 
-    //handArr param = dealer or user array & dealerOrUser = dealer or user <ul>
-    function displayCards(handArr, dealerOrUser) {
-        for (var i = 0; i < handArr.length; i++) {
-            var li = $("<li>");
-            var img = $("<img>").attr("class", "list-group-item cardImg");
-            $(img).attr("src", "https://deckofcardsapi.com/static/img/" + handArr[i] + ".png")
-            $(li).append(img);
-            $(dealerOrUser).append(li)
-        }
+    
+
+
+    function addCard(dealerOrUser, cardImgLink)  {
+        var li = $("<li>");
+        var img = $("<img>").attr("class", "list-group-item cardImg");
+        $(img).attr("src", cardImgLink);
+        $(li).append(img);
+        $(dealerOrUser).append(li);
     }
 
     //CP Hit BTN
-    function hitMe(deckID) {
+    //function hitMe(deckID) 
     $('#hitButton').click(function(e){
         e.preventDefault();
-        $(".userHand").empty()
-        console.log('clicked')
+        console.log(dealerHand);
+        //$(".userHand").empty()
         var userDraw = "https://deckofcardsapi.com/api/deck/" + deckID + "/draw/?count=1";
-        console.log(userDraw)
         $.ajax({
             url: userDraw,
             method: "GET"
         }).then(function(cards) {
-            console.log(cards);
+            //console.log(cards);
 
-            for (var i = 0; i < 1; i++) {
-                userHand.push(cards.cards[i].code);
-            }  
-            console.log(userHand);
+            userHand.push(cards.cards[0].code);
+  
+            console.log("This is userhand on 236: "+userHand);
             var userUL = $(".userHand");
-            displayCards(userHand, userUL);
+            var cardImage = cards.cards[0].image;
+            addCard(userUL, cardImage);
             //append an image tag to divs set in html(ask others about possibly adding two div tags for the users 2 cards. Can be the back of a playing card as example)
-            sumOfHand()
+            sumOfHand();
            
             //we need to add the value of the card into the array for playerHand
         });
        
-    })
-
-    }
-
-    
-
-
-    
-
-    //testing
-    //console.log(deckID);
-    //drawCards();
-    // diceBear();
+    });
 
 
 
