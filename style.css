@@ -144,7 +144,7 @@ content {
   width: 300px;
   text-align: center;
   color: wheat;
-  height: 400px;
+  height: 250px;
 } 
 
 
@@ -187,4 +187,13 @@ button {
 
 button:hover {
   opacity: .75;
+}
+
+.footer {
+  height: 50px;
+  border-top: 6px solid #584f46;
+  margin-top: 3px;
+  background-color:rgb(134, 155, 134);;
+  padding-top: 14px;
+  color: wheat;;
 }
