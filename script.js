@@ -18,6 +18,10 @@ var newGameBtn = $("#newGameButton")
 var endOfGame;
 var dealerDrawingCards = [];
 var secondCardImg;
+var oneAce;
+var initialHandUser;
+var handIndex = 2;
+
 // Add bet totals to local storage?
 
 
@@ -27,51 +31,89 @@ $(document).ready(function() {
     diceBear();
 
     function sumOfHand() {
-        totalValues = [];
-        var value = 0;
-        userHand.forEach(function(index){
-            var cardVal = index[0];
-            
+        var totalHandVal;
 
-            if(cardVal === "J" || cardVal ==="K" || cardVal ==="Q" || cardVal ==="0" || cardVal === "A"){
-                
-                cardVal = 10;
-                totalValues.push(cardVal);
-                
-            } else if(cardVal === "2" || cardVal ==="3" || cardVal ==="4" || cardVal ==="5" || cardVal ==="6" || cardVal ==="7" || cardVal ==="8"  || cardVal ==="9")  {
-                
-                totalValues.push(parseInt(cardVal));
-            } 
+        if (initialHandUser === true) {
+            for (var i = 0; i < userHand.length; i++) {
+                var cardVal = userHand[i].charAt(0);
+                determineCardValue(cardVal, userScore, totalValues);
+                console.log("usersCards:"+totalValues);
+                totalHandVal = totalValues.reduce((a, b) => a + b, 0);
+                userScore = totalHandVal;
 
-            // if (cardVal === "A" && userScore < 11 || cardVal === "A" && dealerScore < 11 ){
-            //     cardVal = 11;
-            //     totalValues.push(cardVal);
-            // } else if (cardVal === "A" && userScore > 11 || cardVal === "A" && dealerScore > 11 ) {
-            //     cardVal = 1; 
-            //     totalValues.push(cardVal);
-            // }
+                var handVal = $('.yourHand');
+                handVal.text("Your Hand:"+totalHandVal);
+            }
+            initialHandUser = false;
+        } else {
+            var cardVal = userHand[handIndex].charAt(0);
+            handIndex++;
+            console.log(totalValues);
 
-            var totalHandVal = totalValues.reduce((a, b) => a + b, 0);
+            determineCardValue(cardVal, userScore, totalValues);
+            totalHandVal = totalValues.reduce((a, b) => a + b, 0);
+            console.log("total hand value at 50:"+totalHandVal);
+            userScore = totalHandVal;
+
             var handVal = $('.yourHand');
             handVal.text("Your Hand:"+totalHandVal);
-            userScore = totalHandVal;
-            console.log("TOTAL HAND VALUE OF USER" + totalHandVal);
-            // set a variable here to check the dealers hand total so we can cross referece them for a push
-            if(totalHandVal === 21) {
-                //document.getElementById("winner").style.display = "block";
-                endOfGame = true;
-                userWins++;
-                displayScores();
-                displayWinLoss("winner");
 
-
-            } else if(totalHandVal > 21 ) {
-                endOfGame = true;
-                userLosses++;
-                displayScores();
-                displayWinLoss("loser");
+            if(userScore > 21 ) {
+            endOfGame = true;
+            userLosses++;
+            displayScores();
+            displayWinLoss("loser");
             }
-        })
+        }
+
+    }
+
+    function determineCardValue(cardVal, userOrDealerScore, wherePush) {
+        if (oneAce) {
+            if (cardVal === "A") {
+                cardVal = 1;
+                wherePush.push(cardVal);
+            } else if (cardVal === "J" || cardVal ==="K" || cardVal ==="Q" || cardVal ==="0") {
+                cardVal = 10;
+                wherePush.push(cardVal);
+            } else if(cardVal === "2" || cardVal ==="3" || cardVal ==="4" || cardVal ==="5" || cardVal ==="6" || cardVal ==="7" || cardVal ==="8"  || cardVal ==="9") {
+                console.log("testingstart: ");
+                cardVal = parseInt(cardVal);
+                console.log("testingend: "+cardVal);
+                wherePush.push(cardVal);
+            }
+            var tempTotal = wherePush.reduce((a, b) => a + b, 0);
+            if (tempTotal> 21) {
+                var index;
+                console.log(wherePush.length);
+                for (var i = 0; i < wherePush.length; i++) {
+                    if (wherePush[i] == 11) {
+                        index = i;
+                    }
+                    console.log("for loop");
+                }
+                console.log(index +"index outside of for loop");
+                wherePush.splice(index, 1);
+                //1 is the new ace value
+                wherePush.push(1);
+                oneAce = false; //11 was removed so no need for this anymore since other stuff should catch
+            } else {
+                //nothing
+            }
+        } else if(cardVal === "A" && userOrDealerScore < 11){
+            cardVal = 11;
+            wherePush.push(cardVal);
+            oneAce = true;
+        } else if(userOrDealerScore >= 11 && cardVal === "A"){
+            cardVal = 1;
+            wherePush.push(cardVal);
+            console.log("ace = 1", cardVal, userScore);
+        } else if(cardVal === "J" || cardVal ==="K" || cardVal ==="Q" || cardVal ==="0"){
+            cardVal = 10;
+            wherePush.push(cardVal);
+        } else if(cardVal === "2" || cardVal ==="3" || cardVal ==="4" || cardVal ==="5" || cardVal ==="6" || cardVal ==="7" || cardVal ==="8"  || cardVal ==="9")  {
+            wherePush.push(parseInt(cardVal));
+        } 
     }
 
     //This will be called at the end of the compareResults function as well as in other places where the game can end before then. Scores are also messed up with buttons being clicked after a game is over so im going to suggest hiding them after a game over and showing them at the start of a game
@@ -86,7 +128,7 @@ $(document).ready(function() {
     function displayWinLoss(outcome)   {
         setTimeout(function(){
             document.getElementById(outcome).style.display = "block";
-        }, 1500);
+        }, 1000);
     }
 
 
@@ -95,7 +137,11 @@ $(document).ready(function() {
     newGameBtn.on("click", function(event) {
         event.preventDefault();
         endOfGame = false;
+        oneAce = false;
+        initialHandUser = true;
         dealerDrawingCards = [];
+        totalValues = [];
+        handIndex = 2;
         document.getElementById("winner").style.display = "none";
         document.getElementById("push").style.display = "none";
         document.getElementById("loser").style.display = "none";
@@ -117,20 +163,13 @@ $(document).ready(function() {
         if (endOfGame) {
             return;
         }
-
+        oneAce = false;
         totalDealerValues = [];
 
         for (var i = 0; i < dealerHand.length; i++) {
             var valueOfCard = dealerHand[i].charAt(0);
 
-            if(valueOfCard === "J" || valueOfCard ==="K" || valueOfCard ==="Q" || valueOfCard ==="0"|| valueOfCard === "A"){
-                valueOfCard = 10;              
-                totalDealerValues.push(valueOfCard);
-                
-            } else if(valueOfCard === "2" || valueOfCard ==="3" || valueOfCard ==="4" || valueOfCard ==="5" || valueOfCard ==="6" || valueOfCard ==="7" || valueOfCard ==="8"  || valueOfCard ==="9")  {
-                              
-                totalDealerValues.push(parseInt(valueOfCard));
-            }
+            determineCardValue(valueOfCard, dealerScore, totalDealerValues);
             console.log("DealersCards:"+totalDealerValues);
             var totalHandVal = totalDealerValues.reduce((a, b) => a + b, 0);
             dealerScore = totalHandVal;
@@ -142,6 +181,7 @@ $(document).ready(function() {
             userLosses++;
             displayScores();
             displayWinLoss("loser");
+            console.log("DEALER BLACKJACK");
             return;
         }
 
@@ -153,21 +193,17 @@ $(document).ready(function() {
         var dealerTotalHandVal;
         while (dealerScore < 17) {
             console.log("THE WHILE LOOP IS USED");
-            var cardArray = dealerDrawingCards[i];
+            var cardArray = dealerDrawingCards[count];
+            console.log(count);
+            console.log(cardArray[0].charAt(0));
+            console.log(cardArray[1]);
             var cardValue = cardArray[0].charAt(0);
             var cardImg = cardArray[1];
             var dealerUL = $(".dealerHand");
 
             addCard(dealerUL, cardImg);
 
-            if(cardValue === "J" || cardValue ==="K" || cardValue ==="Q" || cardValue ==="0"|| cardValue === "A"){
-                cardValue = 10;              
-                totalDealerValues.push(cardValue);
-                
-            } else if(cardValue === "2" || cardValue ==="3" || cardValue ==="4" || cardValue ==="5" || cardValue ==="6" || cardValue ==="7" || cardValue ==="8"  || cardValue ==="9")  {
-                              
-                totalDealerValues.push(parseInt(cardValue));
-            }
+            determineCardValue(cardValue, dealerScore, totalDealerValues);
             dealerTotalHandVal = totalDealerValues.reduce((a, b) => a + b, 0);
             console.log(dealerTotalHandVal);
             dealerScore = dealerTotalHandVal;
