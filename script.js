@@ -1,8 +1,8 @@
-var userHand = [];
-var dealerHand = [];
+var userHand = []; //array of card values for user
+var dealerHand = []; //array of card values for dealer
 
-var backOfCard = "assets/Images/back-of-card.jpg";
-var deckID;
+var backOfCard = "assets/Images/back-of-card.jpg"; //image used for back of cards
+var deckID; //ID for the deck
 
 // Set variables for card values 
 
@@ -10,17 +10,15 @@ var userWins = 0; // (total user wins)
 var userLosses = 0; // (tottal user losses)
 var userScore; // (total value in hand)
 var dealerScore; // (total value in hand)
-var totalScore = [];
-var totalValues = [];
-var totalDealerValues = [];
-var userBetTotal;
-var newGameBtn = $("#newGameButton")
-var endOfGame;
-var dealerDrawingCards = [];
-var secondCardImg;
-var oneAce;
-var initialHandUser;
-var handIndex = 2;
+var totalValues = []; //user value array, contains all values of cards in userHand
+var totalDealerValues = []; //dealer value array, contains all values of cards in dealerHand
+var newGameBtn = $("#newGameButton") //sets the jquery to a variable
+var endOfGame; //used to determine if game over, used for prevent user from clicking other buttons aside from new game, while also not hiding since it looks better
+var dealerDrawingCards = []; //array of card values for dealer to draw from
+var secondCardImg; //image value of the hidden second dealer card
+var oneAce; //used to determine when the first ace is used
+var initialHandUser; //determines if it is the first two dealt cards for user
+var handIndex = 2; //used for adding cards for user since it will grab the index where the newest card is
 
 // Add bet totals to local storage?
 
@@ -28,8 +26,10 @@ var handIndex = 2;
 
 $(document).ready(function() {
 
+    //calls dicebear function
     diceBear();
 
+    //sum of hand will add up the users total hand to the userScore and will call determineCardValue() to push the cards to the arrays
     function sumOfHand() {
         var totalHandVal;
 
@@ -37,7 +37,6 @@ $(document).ready(function() {
             for (var i = 0; i < userHand.length; i++) {
                 var cardVal = userHand[i].charAt(0);
                 determineCardValue(cardVal, userScore, totalValues);
-                console.log("usersCards:"+totalValues);
                 totalHandVal = totalValues.reduce((a, b) => a + b, 0);
                 userScore = totalHandVal;
 
@@ -48,11 +47,9 @@ $(document).ready(function() {
         } else {
             var cardVal = userHand[handIndex].charAt(0);
             handIndex++;
-            console.log(totalValues);
 
             determineCardValue(cardVal, userScore, totalValues);
             totalHandVal = totalValues.reduce((a, b) => a + b, 0);
-            console.log("total hand value at 50:"+totalHandVal);
             userScore = totalHandVal;
 
             var handVal = $('.yourHand');
@@ -68,6 +65,10 @@ $(document).ready(function() {
 
     }
 
+    //determineCardValue will determine the value of cards and will push those values to the different arrays
+    //@param cardVal - string value of what the card is
+    //@param userOrDealerScore - The current score of the user/dealer
+    //@param wherePush - The array of card values
     function determineCardValue(cardVal, userOrDealerScore, wherePush) {
         if (oneAce) {
             if (cardVal === "A") {
@@ -77,22 +78,17 @@ $(document).ready(function() {
                 cardVal = 10;
                 wherePush.push(cardVal);
             } else if(cardVal === "2" || cardVal ==="3" || cardVal ==="4" || cardVal ==="5" || cardVal ==="6" || cardVal ==="7" || cardVal ==="8"  || cardVal ==="9") {
-                console.log("testingstart: ");
                 cardVal = parseInt(cardVal);
-                console.log("testingend: "+cardVal);
                 wherePush.push(cardVal);
             }
             var tempTotal = wherePush.reduce((a, b) => a + b, 0);
             if (tempTotal> 21) {
                 var index;
-                console.log(wherePush.length);
                 for (var i = 0; i < wherePush.length; i++) {
                     if (wherePush[i] == 11) {
                         index = i;
                     }
-                    console.log("for loop");
                 }
-                console.log(index +"index outside of for loop");
                 wherePush.splice(index, 1);
                 //1 is the new ace value
                 wherePush.push(1);
@@ -107,7 +103,6 @@ $(document).ready(function() {
         } else if(userOrDealerScore >= 11 && cardVal === "A"){
             cardVal = 1;
             wherePush.push(cardVal);
-            console.log("ace = 1", cardVal, userScore);
         } else if(cardVal === "J" || cardVal ==="K" || cardVal ==="Q" || cardVal ==="0"){
             cardVal = 10;
             wherePush.push(cardVal);
@@ -115,9 +110,8 @@ $(document).ready(function() {
             wherePush.push(parseInt(cardVal));
         } 
     }
-
-    //This will be called at the end of the compareResults function as well as in other places where the game can end before then. Scores are also messed up with buttons being clicked after a game is over so im going to suggest hiding them after a game over and showing them at the start of a game
     
+    //This function displays the scores to the score div
     function displayScores()    {
         $(".winsScore").empty();
         $(".lossesScore").empty();
@@ -125,6 +119,8 @@ $(document).ready(function() {
         $(".lossesScore").append("Losses: " + userLosses);
     }
     
+    //This function will show the win/loss/push block
+    //@param outcome - the outcome of the game to display
     function displayWinLoss(outcome)   {
         setTimeout(function(){
             document.getElementById(outcome).style.display = "block";
@@ -132,8 +128,9 @@ $(document).ready(function() {
     }
 
 
-    // when new game button is clicked
-
+    //When the new game button is clicked
+    //In this function we set a lot of our initial values due to this resetting the game itself for a new hand
+    //This function will also call shuffleCards which makes the deck
     newGameBtn.on("click", function(event) {
         event.preventDefault();
         endOfGame = false;
@@ -149,54 +146,46 @@ $(document).ready(function() {
         $('.userHand').empty();
         userHand = [];
 
-
-        if($('#winner') || $('#loser') === true){
-        $('#winner').hide();
-        $('#loser').hide();
-        } else {
-        }
-
         shuffleCards();
     });
 
+    //stayButton ends the game for the user and does the calculations for the dealer
     $("#stayButton").on("click", function(event) {
+        //This is used to make sure user doesn't click on buttons at end and mess with game
         if (endOfGame) {
             return;
         }
         oneAce = false;
         totalDealerValues = [];
 
+
+        //This will take the first two dealer values and determine their values and push them
         for (var i = 0; i < dealerHand.length; i++) {
             var valueOfCard = dealerHand[i].charAt(0);
 
             determineCardValue(valueOfCard, dealerScore, totalDealerValues);
-            console.log("DealersCards:"+totalDealerValues);
             var totalHandVal = totalDealerValues.reduce((a, b) => a + b, 0);
             dealerScore = totalHandVal;
         }
 
+        //gets users total hand value and compares it to dealers to determine if dealer blackjack
         var totalHandValOfUser = totalValues.reduce((a, b) => a + b, 0);
         if(totalHandVal === 21 && totalHandValOfUser < 21) {
             endOfGame = true;
             userLosses++;
             displayScores();
             displayWinLoss("loser");
-            console.log("DEALER BLACKJACK");
             return;
         }
 
 
-        
-        //change to while after working
-        //modified a bit since tried getting it to work with just an if/else and wasnt due to how the api value is grabbed, might need to tell it to wait or something?
+        //counter that will go through the made array 
         var count = 0;
+        //sets up the dealerTotalHandVal variable which is the total amount in their hand array
         var dealerTotalHandVal;
+        //while loop that will keep going if dealer value is below 17
         while (dealerScore < 17) {
-            console.log("THE WHILE LOOP IS USED");
             var cardArray = dealerDrawingCards[count];
-            console.log(count);
-            console.log(cardArray[0].charAt(0));
-            console.log(cardArray[1]);
             var cardValue = cardArray[0].charAt(0);
             var cardImg = cardArray[1];
             var dealerUL = $(".dealerHand");
@@ -205,27 +194,25 @@ $(document).ready(function() {
 
             determineCardValue(cardValue, dealerScore, totalDealerValues);
             dealerTotalHandVal = totalDealerValues.reduce((a, b) => a + b, 0);
-            console.log(dealerTotalHandVal);
             dealerScore = dealerTotalHandVal;
 
             count++;
         }
-        console.log(dealerTotalHandVal);
-            if(dealerTotalHandVal > 21 ) {
-                endOfGame = true;
-                userWins++;
-                displayScores();
-                displayWinLoss("winner");
-                return;
+
+        //dealer bust
+        if(dealerTotalHandVal > 21 ) {
+            endOfGame = true;
+            userWins++;
+            displayScores();
+            displayWinLoss("winner");
+            return;
         }
 
-        
-            console.log("TOTAL HAND VALUE OF DEALER" + dealerTotalHandVal);
-            compareHands();
+        compareHands();
 
     });
 
-     //shuffles cards throughout the api and gets deck id
+    //shuffles cards throughout the api and gets deck id
     function shuffleCards() {
         var shuffle = "https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=6";
 
@@ -241,13 +228,15 @@ $(document).ready(function() {
 
     }
 
-
+    //draws the two starting cards for dealer and user and displays them. In addition to this it makes the dealers pile of cards.
+    //@param text - the deckID
     function drawCards(text) {
         userHand = [];
         dealerHand = [];
         userScore = 0;
         dealerScore = 0;
     
+        //users first 2 cards
         var userDraw = "https://deckofcardsapi.com/api/deck/" + text + "/draw/?count=2";
         $.ajax({
             url: userDraw,
@@ -266,6 +255,8 @@ $(document).ready(function() {
            
             sumOfHand();
         });
+
+        //dealers first 2 cards
         var dealerDraw = "https://deckofcardsapi.com/api/deck/" + text + "/draw/?count=2";
         $.ajax({
             url: dealerDraw,
@@ -276,6 +267,7 @@ $(document).ready(function() {
                 dealerHand.push(cards.cards[i].code);
             }
 
+            //when the stay button is pushed this will show what is in the dealers second card place
             $('#stayButton').click(function () {
                 if (this.id == 'stayButton') {
                     $(img2).attr("src", cards.cards[1].images.png);
@@ -295,6 +287,8 @@ $(document).ready(function() {
             $(".dealerHand").append(li);
             $(".dealerHand").append(li2);
         });
+
+        //array of cards for dealer to draw from
         var dealerSetOfHands = "https://deckofcardsapi.com/api/deck/" + text + "/draw/?count=20";
         $.ajax({
             url: dealerSetOfHands,
@@ -307,14 +301,15 @@ $(document).ready(function() {
 
                 dealerDrawingCards.push(codeAndImage);
             }
-            console.log(dealerDrawingCards);
         });
        
     }
 
     
 
-
+    //function for adding cards to the table and displaying them
+    //@param dealerOrUser - the class for dealer or user hand
+    //@param cardImgLink - the link for the card's image
     function addCard(dealerOrUser, cardImgLink)  {
         var li = $("<li>");
         var img = $("<img>").attr("class", "list-group-item cardImg");
@@ -323,9 +318,10 @@ $(document).ready(function() {
         $(dealerOrUser).append(li);
     }
 
- 
+    //when the hitbutton is clicked it will grab a card from the ajax and display said card while also calling the sumOfHand to add to the array
     $('#hitButton').click(function(e){
         e.preventDefault();
+        //if statement used to prevent the user from spam clicking buttons after game is over
         if (endOfGame) {
             return;
         }
@@ -339,17 +335,13 @@ $(document).ready(function() {
             var userUL = $(".userHand");
             var cardImage = cards.cards[0].image;
             addCard(userUL, cardImage);
-            //append an image tag to divs set in html(ask others about possibly adding two div tags for the users 2 cards. Can be the back of a playing card as example)
             sumOfHand();
-           
-            //we need to add the value of the card into the array for playerHand
         });
        
     });
 
+    //Compares the user and dealer values to declare a victor
     function compareHands () {
-        console.log("user final score - " +userScore);
-        console.log("dealer final score - " +dealerScore);
         if (userScore === dealerScore) {
             endOfGame = true;
             displayWinLoss("push");
@@ -370,9 +362,7 @@ $(document).ready(function() {
     }
 
 
-
-//dicebear info
-
+//calls dicebear api to make a randomly generated face, 10000 different possibilities for faces in the program
 function diceBear () {
      var faceId = Math.floor(Math.random() * 10000);
      
@@ -386,8 +376,4 @@ function diceBear () {
      $(".img-of-player").attr("src", faceMakerUser);
 
  }
-
-//We could use dicebear to have the user give us a dealer name and user name which will give them randomly generated avatars
-//Different for male and female so they would have to give use gender as well as name
-
 });
